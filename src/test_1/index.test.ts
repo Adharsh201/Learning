@@ -1,28 +1,38 @@
 import {describe, it, expect} from '@jest/globals';
-import { sum, multiply } from '../index';
+import request from 'supertest';
+import {app} from'../index';
 
-describe('sum function', () => {
-    it('should return the sum of two numbers', () =>{
-        const result = sum(2, 3);
-        expect (result).toBe(5);
+describe("POST /sum", () => {
+    it("should return the sum of two numbers", async () =>{
+        const res = await request(app).post("/sum").send({
+            a: 1,
+            b: 2
+        });
+        expect(res.statusCode).toBe(200);
+        expect(res.body.answer).toBe(3);
     })
 
-    it('should retun the sum of two negative numbers correctly', () =>{
-        const result = sum(-2, -3);
-        expect (result).toBe(-5);
-    })
-})
-
-describe('multiply function', () => {
-
-    it('should return the multiply of two numbers', () =>{
-        const result = multiply(2, 3);
-        expect (result).toBe(6);
+    it("should return the sum of two numbers", async () =>{
+        const res = await request(app).post("/sum").send({
+            a: -1,
+            b: -2
+        });
+        expect(res.statusCode).toBe(200);
+        expect(res.body.answer).toBe(-3);
     })
 
-     it('should retun the multiply of two negative numbers correctly', () =>{
-        const result = multiply(-2, -3);
-        expect (result).toBe(6);
+    it("should return the sum of two numbers", async () =>{
+        const res = await request(app).post("/sum").send({
+            a: 0,
+            b: 0
+
+        });
+        expect(res.statusCode).toBe(200);
+        expect(res.body.answer).toBe(0);
     })
-})
-    
+
+});
+
+
+
+
